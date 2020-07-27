@@ -7,7 +7,7 @@
 
 namespace Helper;
 
-use Illuminate\Support\Env;
+use Zf\Helper\JwtHelper;
 
 /**
  * app 助手类
@@ -18,12 +18,14 @@ use Illuminate\Support\Env;
 class AppHelper
 {
     /**
-     * 判断是否是本地开发环境
-     *
-     * @return bool
+     * 实例化 Jwt 组件
+     * @return \Zf\Helper\Abstracts\Component|JwtHelper
      */
-    public static function isLocal()
+    public static function jwt()
     {
-        return 0 === strcasecmp(Env::get('APP_ENV'), 'local');
+        return JwtHelper::getInstance([
+            'privateKey' => env('JWT_PRIVATE_KEY'),
+            'publicKey'  => env('JWT_PUBLIC_KEY'),
+        ]);
     }
 }
