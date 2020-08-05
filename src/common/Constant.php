@@ -5,7 +5,7 @@
  * @copyright   Chengdu Qb Technology Co., Ltd.
  */
 
-namespace Helper;
+namespace Common;
 
 /**
  * 变量收集类

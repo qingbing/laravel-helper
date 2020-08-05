@@ -47,7 +47,7 @@ class ValidatorHelper extends Component
             return;
         }
         $cacheKey = Constant::CACHE_KEY_VALIDATOR_RULES . '-' . serialize($this->rules);
-        if (AppHelper::isLocal() || null === ($out = Cache::get($cacheKey))) {
+        if (\App::isLocal() || null === ($out = Cache::get($cacheKey))) {
             $attributes        = [];
             $attributeLabels   = [];
             $attributeMessages = [];
@@ -107,7 +107,7 @@ class ValidatorHelper extends Component
         foreach ($rule as $r) {
             $arr = explode_data($r, '|');
             if (0 === count($arr)) {
-                throw new Exception("{$attributeLabel}必须至少指定一个验证规则");
+                throw new Exception("{$attributeLabel}必须至少指定一个验证规则", 1020002001001);
             }
             $ruleName = array_shift($arr);
             array_push($rRules, $ruleName);
@@ -213,7 +213,7 @@ class ValidatorHelper extends Component
         if ($validator->fails()) {
             // 验证失败处理
             if ($failThrowException) {
-                throw new Exception($this->getFirstError());
+                throw new Exception($this->getFirstError(), 1020002002);
             } else {
                 return false;
             }

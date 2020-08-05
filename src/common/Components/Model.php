@@ -5,10 +5,9 @@
  * @copyright   Chengdu Qb Technology Co., Ltd.
  */
 
-namespace Helper;
+namespace Common\Components;
 
-
-use Zf\Helper\Traits\TModelConst;
+use DateTimeInterface;
 
 /**
  * Create and return an un-saved model instance.
@@ -89,10 +88,6 @@ use Zf\Helper\Traits\TModelConst;
  * Find a model by its primary key or throw an exception.
  * @param mixed $id
  * @param array $columns
- * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
- * @method static \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|static|static[] findOrFail($id, $columns = [])
- *
- * Find a model by its primary key or return fresh model instance.
  * @param mixed $id
  * @param array $columns
  * @method static \Illuminate\Database\Eloquent\Model|static findOrNew($id, $columns = [])
@@ -114,10 +109,6 @@ use Zf\Helper\Traits\TModelConst;
  *
  * Execute the query and get the first result or throw an exception.
  * @param array $columns
- * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
- * @method static \Illuminate\Database\Eloquent\Model|static firstOrFail($columns = [])
- *
- * Execute the query and get the first result or call a callback.
  * @param \Closure|array $columns
  * @param \Closure|null $callback
  * @method static \Illuminate\Database\Eloquent\Model|static|mixed firstOr($columns = [], $callback = null)
@@ -151,10 +142,6 @@ use Zf\Helper\Traits\TModelConst;
  * @param array $columns
  * @param string $pageName
  * @param int|null $page
- * @throws \InvalidArgumentException
- * @method static \Illuminate\Contracts\Pagination\LengthAwarePaginator paginate($perPage = null, $columns = [], $pageName = 'page', $page = null)
- *
- * Paginate the given query into a simple paginator.
  * @param int|null $perPage
  * @param array $columns
  * @param string $pageName
@@ -282,10 +269,6 @@ use Zf\Helper\Traits\TModelConst;
  * @param int $count
  * @param string $boolean
  * @param \Closure|null $callback
- * @throws \RuntimeException
- * @method static \Illuminate\Database\Eloquent\Builder|static has($relation, $operator = '>=', $count = 1, $boolean = 'and', $callback = null)
- *
- * Add a relationship count / exists condition to the query with an "or".
  * @param string $relation
  * @param string $operator
  * @param int $count
@@ -396,10 +379,6 @@ use Zf\Helper\Traits\TModelConst;
  * Add a subselect expression to the query.
  * @param \Closure|$this|string $query
  * @param string $as
- * @throws \InvalidArgumentException
- * @method static \Illuminate\Database\Query\Builder selectSub($query, $as)
- *
- * Add a new "raw" select expression to the query.
  * @param string $expression
  * @param array $bindings
  * @method static \Illuminate\Database\Query\Builder selectRaw($expression, $bindings = [])
@@ -407,10 +386,6 @@ use Zf\Helper\Traits\TModelConst;
  * Makes "from" fetch from a subquery.
  * @param \Closure|\Illuminate\Database\Query\Builder|string $query
  * @param string $as
- * @throws \InvalidArgumentException
- * @method static \Illuminate\Database\Query\Builder fromSub($query, $as)
- *
- * Add a raw from clause to the query.
  * @param string $expression
  * @param mixed $bindings
  * @method static \Illuminate\Database\Query\Builder fromRaw($expression, $bindings = [])
@@ -452,10 +427,6 @@ use Zf\Helper\Traits\TModelConst;
  * @param string|null $second
  * @param string $type
  * @param bool $where
- * @throws \InvalidArgumentException
- * @method static \Illuminate\Database\Query\Builder joinSub($query, $as, $first, $operator = null, $second = null, $type = 'inner', $where = false)
- *
- * Add a left join to the query.
  * @param string $table
  * @param \Closure|string $first
  * @param string|null $operator
@@ -515,10 +486,6 @@ use Zf\Helper\Traits\TModelConst;
  * @param string $value
  * @param string $operator
  * @param bool $useDefault
- * @throws \InvalidArgumentException
- * @method static array prepareValueAndOperator($value, $operator, $useDefault = false)
- *
- * Add a "where" clause comparing two columns to the query.
  * @param string|array $first
  * @param string|null $operator
  * @param string|null $second
@@ -739,10 +706,6 @@ use Zf\Helper\Traits\TModelConst;
  * @param string $operator
  * @param array $values
  * @param string $boolean
- * @throws \InvalidArgumentException
- * @method static \Illuminate\Database\Query\Builder whereRowValues($columns, $operator, $values, $boolean = 'and')
- *
- * Adds a or where condition using row values.
  * @param array $columns
  * @param string $operator
  * @param array $values
@@ -832,10 +795,6 @@ use Zf\Helper\Traits\TModelConst;
  * Add an "order by" clause to the query.
  * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Query\Expression|string $column
  * @param string $direction
- * @throws \InvalidArgumentException
- * @method static \Illuminate\Database\Query\Builder orderBy($column, $direction = 'asc')
- *
- * Add a descending "order by" clause to the query.
  * @param string $column
  * @method static \Illuminate\Database\Query\Builder orderByDesc($column)
  *
@@ -1004,16 +963,8 @@ use Zf\Helper\Traits\TModelConst;
  * Set the bindings on the query builder.
  * @param array $bindings
  * @param string $type
- * @throws \InvalidArgumentException
- * @method static \Illuminate\Database\Query\Builder setBindings($bindings, $type = 'where')
- *
- * Add a binding to the query.
  * @param mixed $value
  * @param string $type
- * @throws \InvalidArgumentException
- * @method static \Illuminate\Database\Query\Builder addBinding($value, $type = 'where')
- *
- * Merge an array of bindings into our bindings.
  * @param \Illuminate\Database\Query\Builder $query
  * @method static \Illuminate\Database\Query\Builder mergeBindings($query)
  *
@@ -1048,12 +999,60 @@ use Zf\Helper\Traits\TModelConst;
  * Mix another object into the class.
  * @param object $mixin
  * @param bool $replace
+ * @param string $method
+ * @param array $parameters
+ * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+ * @method static \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|static|static[] findOrFail($id, $columns = [])
+ *
+ * Find a model by its primary key or return fresh model instance.
+ * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+ * @method static \Illuminate\Database\Eloquent\Model|static firstOrFail($columns = [])
+ *
+ * Execute the query and get the first result or call a callback.
+ * @throws \InvalidArgumentException
+ * @method static \Illuminate\Contracts\Pagination\LengthAwarePaginator paginate($perPage = null, $columns = [], $pageName = 'page', $page = null)
+ *
+ * Paginate the given query into a simple paginator.
+ * @throws \RuntimeException
+ * @method static \Illuminate\Database\Eloquent\Builder|static has($relation, $operator = '>=', $count = 1, $boolean = 'and', $callback = null)
+ *
+ * Add a relationship count / exists condition to the query with an "or".
+ * @throws \InvalidArgumentException
+ * @method static \Illuminate\Database\Query\Builder selectSub($query, $as)
+ *
+ * Add a new "raw" select expression to the query.
+ * @throws \InvalidArgumentException
+ * @method static \Illuminate\Database\Query\Builder fromSub($query, $as)
+ *
+ * Add a raw from clause to the query.
+ * @throws \InvalidArgumentException
+ * @method static \Illuminate\Database\Query\Builder joinSub($query, $as, $first, $operator = null, $second = null, $type = 'inner', $where = false)
+ *
+ * Add a left join to the query.
+ * @throws \InvalidArgumentException
+ * @method static array prepareValueAndOperator($value, $operator, $useDefault = false)
+ *
+ * Add a "where" clause comparing two columns to the query.
+ * @throws \InvalidArgumentException
+ * @method static \Illuminate\Database\Query\Builder whereRowValues($columns, $operator, $values, $boolean = 'and')
+ *
+ * Adds a or where condition using row values.
+ * @throws \InvalidArgumentException
+ * @method static \Illuminate\Database\Query\Builder orderBy($column, $direction = 'asc')
+ *
+ * Add a descending "order by" clause to the query.
+ * @throws \InvalidArgumentException
+ * @method static \Illuminate\Database\Query\Builder setBindings($bindings, $type = 'where')
+ *
+ * Add a binding to the query.
+ * @throws \InvalidArgumentException
+ * @method static \Illuminate\Database\Query\Builder addBinding($value, $type = 'where')
+ *
+ * Merge an array of bindings into our bindings.
  * @throws \ReflectionException
  * @method static void mixin($mixin, $replace = true)
  *
  * Dynamically handle calls to the class.
- * @param string $method
- * @param array $parameters
  * @throws \BadMethodCallException
  * @method static mixed macroCall($method, $parameters)
  *
@@ -1075,7 +1074,15 @@ class Model extends \Illuminate\Database\Eloquent\Model
     // public    $incrementing = true; // 主键是否自增，默认为 true
     // protected $keyType      = 'int'; // 自动递增ID的“类型”，默认 int，如果你的主键不是整数，需要将模型上受保护的 $keyType 属性设置为 string
     // public    $timestamps   = true; // 是否自动维护时间戳，默认为 true
-    // protected $dateFormat; // 模型中时间戳格式自定义
+    protected $dateFormat = 'Y-m-d H:i:s'; // 模型中时间戳格式自定义
     // protected $connection; // model 的数据库连接名称
     // protected $attributes   = []; // 模型的默认属性值
+
+    /**
+     * Prepare a date for array / JSON serialization.
+     */
+    protected function serializeDate(DateTimeInterface $date): string
+    {
+        return $date->format($this->dateFormat);
+    }
 }

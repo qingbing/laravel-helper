@@ -13,7 +13,7 @@ namespace Helper;
  * Class Response
  * @package Helper
  */
-class Response
+class ResHelper
 {
     /**
      * 请求的成功响应返回

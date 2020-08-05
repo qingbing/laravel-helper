@@ -26,7 +26,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Helper\\": "src"
+      "Helper\\": "src/helpers",
+      "Common\\": "src/common"
     }
   },
   "autoload-dev": {
