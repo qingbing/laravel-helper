@@ -7,7 +7,7 @@
 
 namespace Helper;
 
-use Zf\Helper\JwtHelper;
+use Zf\Helper\Plugins\Jwt;
 
 /**
  * app 助手类
@@ -19,11 +19,11 @@ class AppHelper
 {
     /**
      * 实例化 Jwt 组件
-     * @return \Zf\Helper\Abstracts\Component|JwtHelper
+     * @return \Zf\Helper\Abstracts\Component|Jwt
      */
     public static function jwt()
     {
-        return JwtHelper::getInstance([
+        return Jwt::getInstance([
             'privateKey' => env('JWT_PRIVATE_KEY'),
             'publicKey'  => env('JWT_PUBLIC_KEY'),
         ]);
