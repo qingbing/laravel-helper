@@ -20,17 +20,17 @@ class RouteHelper
     /**
      * 默认添加的路由
      */
-    const ROUTE_TYPE_DEFAULT    = ''; // 列表
+    const ROUTE_TYPE_DEFAULT = ''; // 列表
     const ROUTE_TYPE_LIST    = 'list'; // 列表
     const ROUTE_TYPE_CREATE  = 'create'; // 增加
     const ROUTE_TYPE_UPDATE  = 'edit'; // 修改
     const ROUTE_TYPE_DESTROY = 'delete'; // 删除
-    const ROUTE_TYPE_SHOW    = 'show'; // 详情
+    const ROUTE_TYPE_SHOW    = 'view'; // 详情
     /**
      * @var array 默认路由
      */
     public static $routeMap = [
-        self::ROUTE_TYPE_DEFAULT    => ['actionIndex', ['get', 'post']],
+        self::ROUTE_TYPE_DEFAULT => ['actionIndex', ['get', 'post']],
         self::ROUTE_TYPE_LIST    => ['actionIndex', ['get', 'post']],
         self::ROUTE_TYPE_CREATE  => ['actionCreate', ['post']],
         self::ROUTE_TYPE_UPDATE  => ['actionEdit', ['post']],

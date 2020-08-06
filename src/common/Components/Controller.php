@@ -7,9 +7,11 @@
 
 namespace Common\Components;
 
+use Helper\ValidatorHelper;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Zf\Helper\Exceptions\Exception;
 
@@ -47,5 +49,24 @@ class Controller extends BaseController
             call_user_func_array([$this, 'afterAction'], ['action' => $method]);
         }
         return $return;
+    }
+
+    /**
+     * 搜索关键字
+     *
+     * @param Request $request
+     * @param array $rules
+     * @return array|bool
+     * @throws Exception
+     */
+    protected function validKeyword(Request $request, array $rules = [])
+    {
+        // 参数检查
+        $params = ValidatorHelper::getInstance()
+            ->addRule('keyword|关键字', ['required', 'string'])
+            ->addRule('limit|显示条数|5', ['int'])
+            ->addRules($rules)
+            ->make($request->query());
+        return $params;
     }
 }

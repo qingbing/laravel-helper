@@ -1085,4 +1085,28 @@ class Model extends \Illuminate\Database\Eloquent\Model
     {
         return $date->format($this->dateFormat);
     }
+
+    /**
+     * 获取调用模型的数据表名
+     *
+     * @return string
+     */
+    public static function tableName()
+    {
+        return (new static())->table;
+    }
+
+    /**
+     * 批量设置模型属性
+     *
+     * @param array $attributes
+     * @return $this
+     */
+    public function setAttributes(array $attributes = [])
+    {
+        foreach ($attributes as $property => $attribute) {
+            $this->setAttribute($property, $attribute);
+        }
+        return $this;
+    }
 }
