@@ -105,7 +105,17 @@ class ValidatorHelper extends Component
         $rRules            = [];
         $attributeMessages = [];
         foreach ($rule as $r) {
-            $arr = explode_data($r, '|');
+            if (0 === strpos($r, 'regex:')) {
+                if (preg_match('/\/(.*)\//', $r, $ms)) {
+                    $tr     = str_replace($ms[0], '__PATTERN__', $r);
+                    $arr    = explode_data($tr, '|');
+                    $arr[0] = str_replace('__PATTERN__', $ms[0], $arr[0]);
+                } else {
+                    throw new Exception('正则验证需要指定正确的正则规则', 1020002001003);
+                }
+            } else {
+                $arr = explode_data($r, '|');
+            }
             if (0 === count($arr)) {
                 throw new Exception("{$attributeLabel}必须至少指定一个验证规则", 1020002001001);
             }

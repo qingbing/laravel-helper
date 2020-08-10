@@ -8,6 +8,7 @@
 namespace Helper;
 
 use Zf\Helper\Plugins\Jwt;
+use Zf\Helper\Plugins\Qiniu;
 
 /**
  * app 助手类
@@ -19,13 +20,32 @@ class AppHelper
 {
     /**
      * 实例化 Jwt 组件
+     *
+     * @param array|null $properties
      * @return \Zf\Helper\Abstracts\Component|Jwt
      */
-    public static function jwt()
+    public static function jwt(array $properties = null)
     {
-        return Jwt::getInstance([
-            'privateKey' => env('JWT_PRIVATE_KEY'),
-            'publicKey'  => env('JWT_PUBLIC_KEY'),
-        ]);
+        $properties = $properties ?? [
+                'privateKey' => env('JWT_PRIVATE_KEY'),
+                'publicKey'  => env('JWT_PUBLIC_KEY'),
+            ];
+        return Jwt::getInstance($properties);
+    }
+
+    /**
+     * 实例化 quniu 组件
+     *
+     * @param array|null $properties
+     * @return \Zf\Helper\Abstracts\Component|Qiniu
+     */
+    public static function qiniu(array $properties = null)
+    {
+        $properties = $properties ?? [
+                'accessKey' => env('QINIU_ACCESS_KEY'),
+                'secretKey' => env('QINIU_SECRET_KEY'),
+                'bucket'    => env('QINIU_BUCKET') ?? null,
+            ];
+        return Qiniu::getInstance($properties);
     }
 }
